@@ -8,7 +8,8 @@ import locale
 import re
 import os
 
-# 15/01/2021
+#  15/01/2021
+#  Feito por Artprozew#5202
 
 appname = 'SA Mod Manager'
 
@@ -31,11 +32,15 @@ tab_parent = ttk.Notebook(root)
 tab1 = ttk.Frame(tab_parent)
 tab2 = ttk.Frame(tab_parent)
 tab3 = ttk.Frame(tab_parent)
+tab4 = ttk.Frame(tab_parent)
+tab5 = ttk.Frame(tab_parent)
 
 tab_parent.bind("<<NotebookTabChanged>>", on_tab_selected)
 tab_parent.add(tab1, text='Config')
 tab_parent.add(tab2, text='Vehicle Lines')
 tab_parent.add(tab3, text='Vehicle Sound')
+tab_parent.add(tab4, text='Vehicle of NPCs')
+tab_parent.add(tab5, text='Help')
 tab_parent.grid(padx=5, pady=5, column=0, row=0)
 
 tab1label = Label(tab1, text=' ', justify='left', anchor='w')
@@ -168,11 +173,19 @@ newidbox = Checkbutton(tab2, variable=newidvar)
 newidbox.grid(column=1, row=7)
 newidbox.select()
 
-# TAB 3
+label = Label(tab2, text='Choose the vehicle class')
+label.grid(column=0, row=9)
 
-'''vehlist = ['landstal', 'bravura', 'buffalo', 'linerun', 'peren', 'sentinel', 'dumper', 'firetruk', 'trash', 'stretch', 'manana', 'infernus', 'voodoo', 'pony',
-           'mule', 'cheetah', 'ambulan', 'leviathn', 'moonbeam', 'esperant', 'taxi', 'washing', 'bobcat', 'mrwhoop', 'bfinject', 'hunter', 'premier', 'enforcer',
-           'securica', 'banshee', 'predator', 'bus', 'rhino', 'barracks', 'hotknife', 'artict1', 'previon', 'coach', 'cabbie', stallion]'''
+list = ['default', 'normal', 'poorfamily', 'richfamily', 'executive', 'worker', 'big', 'taxi', 'moped', 'motorbike', 'leisureboat', 'workerboat', 'bicycle', 'ignore']
+
+item = StringVar()
+item.set('Vehicle class')
+
+dropmenu = OptionMenu(tab2, item, *list)
+dropmenu.config(width=15)
+dropmenu.grid(padx=5, pady=5, column=0, row=10)
+
+# ======================== TAB 3 ========================
 
 veh = '[landstal,bravura,buffalo,linerun,peren,sentinel,dumper,firetruk,trash,stretch,manana,infernus,voodoo,pony,mule,cheetah,ambulan,leviathn,moonbeam,esperant,taxi,washing,bobcat,mrwhoop,bfinject,' \
           'hunter,premier,enforcer,securica,banshee,predator,bus,rhino,barracks,hotknife,artict1,previon,coach,cabbie,stallion,rumpo,rcbandit,romero,packer,monster,' \
@@ -196,7 +209,7 @@ vehmenu.config(width=15)
 vehmenu.grid(padx=5, pady=5, column=0, row=8)
 
 cfgpath = Entry(tab3, width=50, borderwidth=2)
-cfgpath.insert(0, '\'data\' folder path')
+cfgpath.insert(0, '\'vehicleAudioSettings.cfg\' file path')
 cfgpath.config(fg='grey')
 cfgpath.grid(padx=50, pady=5, column=0, row=0)
 
@@ -206,33 +219,72 @@ newveh.config(fg='grey')
 newveh.grid(padx=5, pady=5, column=0, row=1)
 
 vehaudio = Entry(tab3, width=50, borderwidth=2)
-vehaudio.insert(0, 'Model name to get audio from')
+vehaudio.insert(0, 'Model name to get audio from (or use the list below)')
 vehaudio.config(fg='grey')
 vehaudio.grid(padx=5, pady=5, column=0, row=2)
 
-label = Label(tab2, text='Choose the vehicle class')
-label.grid(column=0, row=9)
+# ======================== TAB 4 ========================
 
-list = ['default', 'normal', 'poorfamily', 'richfamily', 'executive', 'worker', 'big', 'taxi', 'moped', 'motorbike', 'leisureboat', 'workerboat', 'bicycle', 'ignore']
+poppath = Entry(tab4, width=50, borderwidth=2)
+poppath.insert(0, '\'cargrp.dat\' file path')
+poppath.config(fg='grey')
+poppath.grid(padx=50, pady=5, column=0, row=0)
 
-item = StringVar()
-item.set('Vehicle class')
+popveh = Entry(tab4, width=50, borderwidth=2)
+popveh.insert(0, 'Vehicle name to insert')
+popveh.config(fg='grey')
+popveh.grid(padx=5, pady=5, column=0, row=1)
 
-dropmenu = OptionMenu(tab2, item, *list)
-dropmenu.config(width=15)
-dropmenu.grid(padx=5, pady=5, column=0, row=10)
+poplist = ['POPCYCLE_GROUP_WORKERS', 'POPCYCLE_GROUP_BUSINESS', 'POPCYCLE_GROUP_CLUBBERS', 'POPCYCLE_GROUP_FARMERS', 'POPCYCLE_GROUP_BEACHFOLK', 'POPCYCLE_GROUP_PARKFOLK',
+           'POPCYCLE_GROUP_CASUAL_RICH', 'POPCYCLE_GROUP_CASUAL_AVERAGE', 'POPCYCLE_GROUP_CASUAL_POOR', 'POPCYCLE_GROUP_PROSTITUTES', 'POPCYCLE_GROUP_CRIMINALS',
+           'POPCYCLE_GROUP_GOLFERS', 'POPCYCLE_GROUP_SERVANTS', 'POPCYCLE_GROUP_AIRCREW', 'POPCYCLE_GROUP_ENTERTAINERS', 'POPCYCLE_GROUP_OUT_OF_TOWN_FACTORY',
+           'POPCYCLE_GROUP_DESERT_FOLK', 'POPCYCLE_GROUP_AIRCREW_RUNWAY', 'Boats']
+
+popitem = StringVar()
+popitem.set('Choose group')
+
+popmenu = OptionMenu(tab4, popitem, *poplist)
+popmenu.config(width=40)
+popmenu.grid(padx=5, pady=5, column=0, row=10)
+
+
+
+def configcargrp():
+    poppathvar = poppath.get()
+    popvehvar = popveh.get()
+    popitemvar = popitem.get()
+    popsave = []
+    lineveh = []
+    popfile = open(poppathvar + "\\" + "cargrp.dat", 'r+')
+    while True:
+        line = popfile.readline()
+        if not line:
+            popfile.seek(0)
+            for x in range(len(popsave)):
+                popfile.write(popsave[x])
+            break
+        if popitemvar in line:
+            str = line.split('#')
+            str = ' '.join(str[0].split())  # Remover tabs, espaços
+            str = str.split(', ')
+            lineveh = [', '.join(str[n:]) for n in range(len(str))]  # Juntando na lista cada item do popcycle
+            index = len(lineveh) - 1
+            line = line.replace(lineveh[index], lineveh[index] + ", " + popvehvar)
+        popsave.append(line)
+    popfile.close()
+
 
 def configaudio():
     cfgpath2 = cfgpath.get()
-    cfgfile = open(cfgpath2 + "\\" + "gtasa_vehicleAudioSettings.cfg", 'r+')
-    addlines = False
-    cfglines = []
-    cfglines2 = []
     vaudio = vehaudio.get()
     vitem = vehitem.get()
     newvehvar = newveh.get()
     savedline = ''
     line = ''
+    cfglines = []
+    cfglines2 = []
+    addlines = False
+    cfgfile = open(cfgpath2 + "\\" + "gtasa_vehicleAudioSettings.cfg", 'r+')
     while True:
         line = cfgfile.readline()
         if not line:
@@ -246,25 +298,19 @@ def configaudio():
             break
         if not vitem == 'Vehicle sound' and not vitem == 'DISABLE':
             if vitem in line:
-                print('saved vitem')
                 savedline = line
                 savedline = savedline.replace(vitem, newvehvar)
         if len(vaudio) > 0:
             if any(ext in vaudio for ext in vehlist):
                 if vaudio in line:
-                    print('saved vaudio')
                     savedline = line
                     savedline = savedline.replace(vaudio, newvehvar)
         if addlines == True:
             cfglines2.append(line)
-            #line = savedline
-            #cfglines.insert(len(cfglines) + 3, line)
-            #addlines = False
-        if addlines == False:
+        else:
             cfglines.append(line)
         if ';start' in line:
             addlines = True
-            #line2 = line + "\n"
     cfgfile.close()
 
 
@@ -275,9 +321,9 @@ def configini():
                  'Number of flying lines =', 'Number of boat lines =']
     answer = [handcfg.get(), audio.get(), handlines.get(), vehmodels.get(), killable.get(),
               bike.get(), plane.get(), boat.get()]
+    inisave = []
     inipath2 = inipath.get()
     inifile = open(inipath2 + "\\" + "fastman92limitAdjuster_GTASA.ini", 'r+')
-    inisave = []
     while True:
         line = inifile.readline()
         if not line:
@@ -285,7 +331,7 @@ def configini():
             for x in range(len(inisave)):
                 inifile.write(inisave[x])
             break
-        if len(line) > 1:
+        if len(line) > 0:
             for x in range(len(itemslist)):
                 var = itemslist[x]
                 if var in line:
@@ -300,7 +346,6 @@ def configini():
                     else:
                         var = var + " " + answer[x]
                     if boollist[x].get() == True:
-                        print(line)
                         if "#" in line:
                             str = "#" + str  # Adicionar para o .replace remover
                         if ";" in line:
@@ -316,9 +361,11 @@ def rename():
     newnamevar = newname.get()
     carnamevar = carname.get()
     newidinput = newid.get()
-    #if len(newnamevar) > 7
-    file = open(pathvar + "\\" + modnamevar + ".txt", 'r+')
     saveall = []
+    if len(newnamevar) > 7:
+        messagebox.showwarning('Warning', '\'New name\' cannot have more than 7 characters!')
+        return
+    file = open(pathvar + "\\" + modnamevar + ".txt", 'r+')
     while True:
         line = file.readline()
         if not line:
@@ -326,8 +373,7 @@ def rename():
             for x in range(len(saveall)):
                 file.write(saveall[x])
             break
-        if len(line) > 1:
-            #if modnamevar.lower() in line or modnamevar.upper() in line:
+        if len(line) > 0:
             if modnamevar.lower() in line:
                 line = line.replace(modnamevar.lower(), newnamevar.lower())
             if modnamevar.upper() in line:
@@ -339,17 +385,9 @@ def rename():
                         line = line.replace(list[x], item.get())
                         break
             if newidvar.get() == True:
-                str = re.search(r'\d\d\d\d\d,', line)
-                if not str:
-                    str = re.search(r'\d\d\d\d,', line)
-                    if not str:
-                        str = re.search(r'\d\d\d,', line)
+                str = re.search(r'\d*,', line)
                 if str:
                     line = line.replace(str.group(), newidinput + ",")
-                    print(str.group())
-            '''integers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-            if line.find(integers, 0, 3):
-                if line.find(integers, 1, 3):'''
         saveall.append(line)
     file.close()
     if os.path.isfile(pathvar + "\\" + modnamevar + '.dff'):
@@ -386,6 +424,10 @@ dependencies.grid(padx=5, pady=5, column=0, row=20)
 # tab 3
 configaudio = Button(tab3, text='Apply', command=configaudio, width=20)
 configaudio.grid(padx=5, pady=5, column=0, row=20)
+
+# tab 4
+configcargrp = Button(tab4, text='Apply', command=configcargrp, width=20)
+configcargrp.grid(padx=5, pady=5, column=0, row=20)
 
 '''def callback(*args):
     label.configure(text='Selecinado: {}'.format(vehitem.get()))
