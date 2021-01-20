@@ -12,7 +12,7 @@ import time
 #  15/01/2021
 #  Feito por Artprozew#5202
 
-appname = 'SA Mod Editor'
+appname = 'Vehicle Mod Editor v0.3'
 
 root = tk.Tk()
 root.title(appname)
@@ -24,7 +24,7 @@ frame = Frame(root, width=200, height=200).grid()
 windll = ctypes.windll.kernel32
 windll.GetUserDefaultUILanguage()
 lang = locale.windows_locale[windll.GetUserDefaultUILanguage()]  #  Língua usada no windows atualmente
-#lang = 'en_US'
+lang = 'en_US'
 if lang == 'pt_BR' or lang == 'pt_PT':
     texts = {
     'configini1':'Config .ini',
@@ -32,7 +32,8 @@ if lang == 'pt_BR' or lang == 'pt_PT':
     'vehsound1':'Sons',
     'npcs1':'Veículos de NPCs',
     'help1':'Ajuda e Info',
-    'inipath1':'Caminho para o \'.ini\'',
+    'inipath1':'Caminho para o \'fastman92limitAdjuster_GTASA.ini\'',
+    'inipath2':'Caminho para o \'fastman92limitAdjuster_GTAVC.ini\'',
     'path1':'Caminho para o mod',
     'modname1':'Nome do mod',
     'newname1':'Novo nome do mod',
@@ -42,7 +43,8 @@ if lang == 'pt_BR' or lang == 'pt_PT':
     'class1':'Classe do veículo',
     'disable1':'NENHUM',
     'vehsound1':'Som do veículo',
-    'cfgpath1':'Caminho para o \'vehicleAudioSettings.cfg\'',
+    'cfgpath1':'Caminho para o \'gtasa_vehicleAudioSettings.cfg\'',
+    'cfgpath2':'Caminho para o \'gtavc_vehicleAudioSettings.cfg\'',
     'newveh1':'Nome do mod',
     'vehaudio1':'Nome do veículo para transferir o som',
     'poppath1':'Caminho para o \'cargrp.dat\'',
@@ -64,7 +66,7 @@ if lang == 'pt_BR' or lang == 'pt_PT':
     'killable1':'Count of killable model IDs',
     'bike1':'Number of bike lines',
     'plane1':'Number of flying lines',
-    'boat1':'Number of boat lines'
+    'boat1':'Number of boat lines',
     }
 else:
     texts = {
@@ -73,7 +75,8 @@ else:
     'vehsound1': 'Sounds',
     'npcs1': 'NPCs vehicles',
     'help1': 'Help and Info',
-    'inipath1':'Path to \'.ini\' file',
+    'inipath1':'Path to \'fastman92limitAdjuster_GTASA.ini\'',
+    'inipath2':'Path to \'fastman92limitAdjuster_GTAVC.ini\'',
     'path1':'Mod path',
     'modname1':'Mod name',
     'newname1':'New mod name',
@@ -83,7 +86,8 @@ else:
     'class1':'Vehicle class',
     'disable1':'NONE',
     'vehsound1':'Vehicle sound',
-    'cfgpath1':'Path to \'vehicleAudioSettings.cfg\'',
+    'cfgpath1':'Path to \'gtasa_vehicleAudioSettings.cfg\'',
+    'cfgpath2':'Path to \'gtavc_vehicleAudioSettings.cfg\'',
     'newveh1':'Mod name',
     'vehaudio1':'Vehicle name to get audio from',
     'poppath1':'Path to \'cargrp.dat\'',
@@ -105,16 +109,78 @@ else:
     'killable1': 'Count of killable model IDs',
     'bike1': 'Number of bike lines',
     'plane1': 'Number of flying lines',
-    'boat1': 'Number of boat lines'
+    'boat1': 'Number of boat lines',
     }
 
 '''def on_tab_selected(event):
     selected_tab = event.widget.select()
-    tab_next = event.widget.tab(selected_tab, "text")'''
+    tab_text = event.widget.tab(selected_tab, "text")'''
+
+tab_parent = ttk.Notebook(root)
+tab1 = ttk.Frame(tab_parent)
+tab2 = ttk.Frame(tab_parent)
+tab3 = ttk.Frame(tab_parent)
+tab4 = ttk.Frame(tab_parent)
+tab5 = ttk.Frame(tab_parent)
+
+#tab_parent.bind("<<NotebookTabChanged>>", on_tab_selected)
+tab_parent.add(tab1, text=texts['configini1'])
+tab_parent.add(tab2, text=texts['vehlines1'])
+tab_parent.add(tab3, text=texts['vehsound1'])
+tab_parent.add(tab4, text=texts['npcs1'])
+tab_parent.add(tab5, text=texts['help1'])
+tab_parent.grid(padx=5, pady=5, column=0, row=0)
+
+tab1label = Label(tab1, text='', justify='left', anchor=W)
+tab1label.grid(padx=0, pady=0, column=0, row=18, sticky=W)
+
+def savc():
+    if savcvar.get() == True:
+        inipath.delete(0, 'end')
+        inipath.insert(0, texts['inipath2'])
+        inipath.config(fg='grey')
+        cfgpath.delete(0, 'end')
+        cfgpath.insert(0, texts['cfgpath2'])
+        cfgpath.config(fg='grey')
+    else:
+        inipath.delete(0, 'end')
+        inipath.insert(0, texts['inipath1'])
+        inipath.config(fg='grey')
+        cfgpath.delete(0, 'end')
+        cfgpath.insert(0, texts['cfgpath1'])
+        cfgpath.config(fg='grey')
+
+def savc2():
+    if savcvar.get() == True:
+        cfgpath.delete(0, 'end')
+        cfgpath.insert(0, texts['cfgpath2'])
+        cfgpath.config(fg='grey')
+        inipath.delete(0, 'end')
+        inipath.insert(0, texts['inipath2'])
+        inipath.config(fg='grey')
+    else:
+        cfgpath.delete(0, 'end')
+        cfgpath.insert(0, texts['cfgpath1'])
+        cfgpath.config(fg='grey')
+        inipath.delete(0, 'end')
+        inipath.insert(0, texts['inipath1'])
+        inipath.config(fg='grey')
+
+savcvar = BooleanVar()
+savc = Checkbutton(tab1, text='VC', command=savc, variable=savcvar)
+savc.grid(padx=5, pady=5, column=0, row=1, sticky=W)
+savc.deselect()
+
+savc2 = Checkbutton(tab3, text='VC', command=savc2, variable=savcvar)
+savc2.grid(padx=5, pady=5, column=0, row=0, sticky=W)
+savc2.deselect()
 
 def onclick(event):
     if len(inipath.get()) == 0:
-        inipath.insert(0, texts['inipath1'])
+        if savcvar.get() == True:
+            inipath.insert(0, texts['inipath2'])
+        else:
+            inipath.insert(0, texts['inipath1'])
         inipath.config(fg='grey')
     if len(path.get()) == 0:
         path.insert(0, texts['path1'])
@@ -132,7 +198,10 @@ def onclick(event):
         newid.insert(0, texts['newid1'])
         newid.config(fg='grey')
     if len(cfgpath.get()) == 0:
-        cfgpath.insert(0, texts['cfgpath1'])
+        if savcvar.get() == True:
+            cfgpath.insert(0, texts['cfgpath2'])
+        else:
+            cfgpath.insert(0, texts['cfgpath1'])
         cfgpath.config(fg='grey')
     if len(newveh.get()) == 0:
         newveh.insert(0, texts['newveh1'])
@@ -174,25 +243,7 @@ def onclick(event):
         if event.widget.get() in texts[x]:
             event.widget.delete(0, 'end')
             event.widget.config(fg='black')
-    return None
-
-tab_parent = ttk.Notebook(root)
-tab1 = ttk.Frame(tab_parent)
-tab2 = ttk.Frame(tab_parent)
-tab3 = ttk.Frame(tab_parent)
-tab4 = ttk.Frame(tab_parent)
-tab5 = ttk.Frame(tab_parent)
-
-#tab_parent.bind("<<NotebookTabChanged>>", on_tab_selected)
-tab_parent.add(tab1, text=texts['configini1'])
-tab_parent.add(tab2, text=texts['vehlines1'])
-tab_parent.add(tab3, text=texts['vehsound1'])
-tab_parent.add(tab4, text=texts['npcs1'])
-tab_parent.add(tab5, text=texts['help1'])
-tab_parent.grid(padx=5, pady=5, column=0, row=0)
-
-tab1label = Label(tab1, text='', justify='left', anchor=W)
-tab1label.grid(padx=0, pady=0, column=0, row=18, sticky=W)
+    return
 
 def onhover(event):
     time.sleep(0.1)
@@ -445,9 +496,24 @@ def configcargrp():
     popitemvar = popitem.get()
     popsave = []
     lineveh = []
-    popfile = open(poppathvar + "\\" + "cargrp.dat", 'r+')
+    try:
+        popfile = open(poppathvar + "\\" + "cargrp.dat", 'r+')
+    except:
+        messagebox.showerror('ERROR', "The file 'cargrp.dat' was not found\nArquivo não encontrado")
+        return
+    passed = False
     while True:
-        line = popfile.readline()
+        try:
+            line = popfile.readline()
+        except:
+            if passed == False:
+                popfile.close()
+                try:
+                    popfile = open(poppathvar + "\\" + "cargrp.dat", 'r+', encoding="utf8", errors='ignore')
+                except:
+                    messagebox.showerror('ERROR', 'Could not read a line in the file, try to remove manually special characters from the file ex. russian, arab characters, etc. or try to change the file encoding')
+                line = popfile.readline()
+                passed = True
         if not line:
             popfile.seek(0)
             for x in range(len(popsave)):
@@ -471,12 +537,38 @@ def configaudio():
     newvehvar = newveh.get()
     savedline = ''
     line = ''
+    linecounter = 0
     cfglines = []
     cfglines2 = []
     addlines = False
-    cfgfile = open(cfgpath2 + "\\" + "gtasa_vehicleAudioSettings.cfg", 'r+')
+    if savcvar.get() == False:
+        try:
+            cfgfile = open(cfgpath2 + "\\" + "gtasa_vehicleAudioSettings.cfg", 'r+')
+        except:
+            messagebox.showerror('ERROR', "The file 'gtasa_vehicleAudioSettings.cfg' was not found\nArquivo não encontrado")
+            return
+    else:
+        try:
+            cfgfile = open(cfgpath2 + "\\" + "gtavc_vehicleAudioSettings.cfg", 'r+')
+        except:
+            messagebox.showerror('ERROR', "The file 'gtavc_vehicleAudioSettings.cfg' was not found\nArquivo não encontrado")
+            return
+    passed = False
     while True:
-        line = cfgfile.readline()
+        try:
+            line = cfgfile.readline()
+        except:
+            if passed == False:
+                cfgfile.close()
+                try:
+                    if savcvar.get() == False:
+                        cfgfile = open(cfgpath2 + "\\" + "gtasa_vehicleAudioSettings.cfg", 'r+', encoding="utf8", errors='ignore')
+                    else:
+                        cfgfile = open(cfgpath2 + "\\" + "gtavc_vehicleAudioSettings.cfg", 'r+', encoding="utf8", errors='ignore')
+                except:
+                    messagebox.showerror('ERROR', 'Could not read a line in the file, try to remove manually special characters from the file ex. russian, arab characters, etc. or try to change the file encoding')
+                line = cfgfile.readline()
+                passed = True
         if not line:
             cfgfile.seek(0)
             for x in range(len(cfglines)):
@@ -499,8 +591,10 @@ def configaudio():
             cfglines2.append(line)
         else:
             cfglines.append(line)
-        if ';start' in line:
-            addlines = True
+        if '; A                                         B             C      D      E         F            G            H         I            J           K          L          M           N                 O' in line:
+            linecounter += 1
+            if linecounter == 7:
+                addlines = True
     cfgfile.close()
 
 
@@ -513,9 +607,34 @@ def configini():
               bike.get(), plane.get(), boat.get()]
     inisave = []
     inipath2 = inipath.get()
-    inifile = open(inipath2 + "\\" + "fastman92limitAdjuster_GTASA.ini", 'r+')
+    if savcvar.get() == False:
+        try:
+            inifile = open(inipath2 + "\\" + "fastman92limitAdjuster_GTASA.ini", 'r+')
+        except:
+            messagebox.showerror('ERROR', "The file 'fastman92limitAdjuster_GTASA.ini' was not found\nArquivo não encontrado")
+            return
+    else:
+        try:
+            inifile = open(inipath2 + "\\" + "fastman92limitAdjuster_GTAVC.ini", 'r+')
+        except:
+            messagebox.showerror('ERROR', "The file 'fastman92limitAdjuster_GTAVC.ini' was not found\nArquivo não encontrado")
+            return
+    passed = False
     while True:
-        line = inifile.readline()
+        try:
+            line = inifile.readline()
+        except:
+            if passed == False:
+                inifile.close()
+                try:
+                    if savcvar.get() == False:
+                        inifile = open(inipath2 + "\\" + "fastman92limitAdjuster_GTASA.ini", 'r+', encoding="utf8", errors='ignore')
+                    else:
+                        inifile = open(inipath2 + "\\" + "fastman92limitAdjuster_GTAVC.ini", 'r+', encoding="utf8", errors='ignore')
+                except:
+                    messagebox.showerror('ERROR', 'Could not read a line in the file, try to remove manually special characters from the file ex. russian, arab characters, etc. or try to change the file encoding')
+                line = file.readline()
+                passed = True
         if not line:
             inifile.seek(0)
             for x in range(len(inisave)):
@@ -535,7 +654,7 @@ def configini():
                                 var = "#" + var
                     else:
                         var = var + " " + answer[x]
-                    if boollist[x].get() == True:
+                    if boollist[x].get() == True and answer[x].isdecimal() and len(answer[x]) > 0:
                         if "#" in line:
                             str = "#" + str  # Adicionar para o .replace remover
                         if ";" in line:
@@ -552,32 +671,48 @@ def rename():
     vehnamevar = vehname.get()
     newidinput = newid.get()
     saveall = []
+    passed = False
     if len(newnamevar) > 7:
         messagebox.showwarning(texts['warning1'], texts['warn1'])
         return
-    file = open(pathvar + "\\" + modnamevar + ".txt", 'r+')
+    try:
+        file = open(pathvar + "\\" + modnamevar + ".txt", 'r+')
+    except:
+        messagebox.showerror('ERROR', "The file '" + modnamevar + ".txt' was not found\nArquivo não encontrado")
+        return
     while True:
-        line = file.readline()
+        try:
+            line = file.readline()
+        except:
+            if passed == False:
+                file.close()
+                try:
+                    file = open(pathvar + "\\" + modnamevar + ".txt", 'r+', encoding="utf8", errors='ignore')
+                except:
+                    messagebox.showerror('ERROR', 'Could not read a line in the file, try to remove manually special characters from the file ex. russian, arab characters, etc. or try to change the file encoding')
+                line = file.readline()
+                passed = True
         if not line:
             file.seek(0)
             for x in range(len(saveall)):
                 file.write(saveall[x])
             break
         if len(line) > 0:
+            if newidvar.get() == True:
+                if len(newidinput) != 0 and newidinput.isdecimal():
+                    str = re.search(r'(\d*),\s*' + modnamevar, line)
+                    if str:
+                        line = line.replace(str.group(), newidinput + ",\t" + modnamevar)
             if modnamevar.lower() in line:
                 line = line.replace(modnamevar.lower(), newnamevar.lower())
             if modnamevar.upper() in line:
                 line = line.replace(modnamevar.upper(), newnamevar.upper())
-            if item.get() != texts['default1'] or item.get() != texts['class1']:
+            if item.get() != texts['default1'] and item.get() != texts['class1']:
                 x = 1
                 for x in range(len(list)):
                     if list[x] in line:
                         line = line.replace(list[x], item.get())
                         break
-            if newidvar.get() == True:
-                str = re.search(r'\d*,', line)
-                if str:
-                    line = line.replace(str.group(), newidinput + ",")
         saveall.append(line)
     file.close()
     if os.path.isfile(pathvar + "\\" + modnamevar + '.dff'):
@@ -656,6 +791,15 @@ def needed():
             webbrowser.open('gtaforums.com/topic/733982-fastman92-limit-adjuster/')
 
 
+def tip():
+    if lang == 'pt_BR' or lang == 'pt_PT':
+        messagebox.showinfo('Ajuda', 'Para aplicar as linhas no novo veículo: Coloque o veículo (.txd e .dff) e o arquivo de linhas (.txt) numa pasta (de preferência já dentro do modloader), '
+                                           'e renomeie o arquivo de linhas para o mesmo nome do arquivo do veículo. O programa mudará o nome de todos esses arquivos para o novo nome do mod escolhido')
+    else:
+        messagebox.showinfo('Help', 'To apply the lines to the new vehicle: Place the vehicle (.txd and .dff) and the lines file (.txt) in a folder (preferably already inside the modloader), '
+                                            'and rename the line file to the same name as the vehicle file. The program will rename all those files to the name of the new mod name chosen')
+
+
 # tab 1
 configini = Button(tab1, text=texts['apply1'], command=configini, width=20)
 configini.grid(padx=5, pady=5, column=0, row=20)
@@ -663,6 +807,9 @@ configini.grid(padx=5, pady=5, column=0, row=20)
 # tab 2
 configcar = Button(tab2, text=texts['apply1'], command=rename, width=20)
 configcar.grid(padx=5, pady=5, column=0, row=20)
+
+tip = Button(tab2, text='?', command=tip, width=3)
+tip.grid(padx=5, pady=5, column=0, row=3, sticky=E)
 
 # tab 3
 configaudio = Button(tab3, text=texts['apply1'], command=configaudio, width=20)
