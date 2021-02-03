@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
@@ -11,12 +12,10 @@ import os
 import time
 
 #  15/01/2021
-#  Feito por Artprozew#5202
-
-appname = 'Vehicle Mod Editor v0.4'
+#  Feito por Artprozew
 
 root = tk.Tk()
-root.title(appname)
+root.title('Vehicle Mod Editor v0.4.2')
 root.geometry('630x375')
 root.resizable(0, 0)
 
@@ -25,9 +24,10 @@ frame = Frame(root, width=200, height=200).grid()
 if os.path.isfile('vme.ico'):
     root.iconbitmap('vme.ico')
 
-windll = ctypes.windll.kernel32
-windll.GetUserDefaultUILanguage()
-lang = locale.windows_locale[windll.GetUserDefaultUILanguage()]  #  Língua usada no windows atualmente
+if messagebox.askyesno('Language/Linguagem', 'Gostaria de mudar a linguagem do programa para inglês?\nWould you like to change the program language to english?'):
+    lang = 'en_US'
+else:
+    lang = 'pt_BR'
 
 if lang == 'pt_BR' or lang == 'pt_PT':
     texts = {
@@ -38,10 +38,10 @@ if lang == 'pt_BR' or lang == 'pt_PT':
     'help1':'Ajuda e Info',
     'inipath1':'Caminho para o \'fastman92limitAdjuster_GTASA.ini\'',
     'inipath2':'Caminho para o \'fastman92limitAdjuster_GTAVC.ini\'',
-    'path1':'Caminho para o mod',
-    'modname1':'Nome do mod',
-    'newname1':'Novo nome do mod',
-    'vehname1':'Novo nome do veículo',
+    'path1':'Caminho para o veículo',
+    'modname1':'Nome do veículo',
+    'newname1':'Novo nome do veículo',
+    'vehname1':'Nome do veículo no jogo',
     'newid1':'Novo ID do veículo',
     'tip':'Dica: você pode inserir o nome acima ou escolher na lista abaixo',
     'class1':'Classe do veículo',
@@ -49,13 +49,13 @@ if lang == 'pt_BR' or lang == 'pt_PT':
     'vehsound1':'Som do veículo',
     'cfgpath1':'Caminho para o \'gtasa_vehicleAudioSettings.cfg\'',
     'cfgpath2':'Caminho para o \'gtavc_vehicleAudioSettings.cfg\'',
-    'newveh1':'Nome do mod',
+    'newveh1':'Nome do veículo',
     'vehaudio1':'Nome do veículo para transferir o som',
     'poppath1':'Caminho para o \'cargrp.dat\'',
     'popveh1':'Nome do veículo para inserir',
     'popitem1':'Escolha o grupo',
     'warning1':'Aviso',
-    'warn1':'\'Novo nome do mod\' não pode ter mais de 7 caracteres!',
+    'warn1':'\'Novo nome do veículo\' não pode ter mais de 7 caracteres!',
     'apply1':'Aplicar',
     'default1':'PADRÃO',
     'infolabel1':'Se você precisar de ajuda, clique "Mais informações" abaixo para entender\n melhor como funciona. Esse programa irá facilitar e agilizar esse processo.',
@@ -71,7 +71,11 @@ if lang == 'pt_BR' or lang == 'pt_PT':
     'bike1':'Number of bike lines',
     'plane1':'Number of flying lines',
     'boat1':'Number of boat lines',
-    'choose1':'Procurar'
+    'choose1':'Procurar',
+    'remove1':'Remover',
+    'create1':'Criar linhas',
+    'donemsg1':'Aplicado com sucesso!',
+    'errormsg1':'Ocorreu um erro ao tentar concluir o pedido'
     }
 else:
     texts = {
@@ -82,10 +86,10 @@ else:
     'help1': 'Help and Info',
     'inipath1':'Path to \'fastman92limitAdjuster_GTASA.ini\'',
     'inipath2':'Path to \'fastman92limitAdjuster_GTAVC.ini\'',
-    'path1':'Mod path',
-    'modname1':'Mod name',
-    'newname1':'New mod name',
-    'vehname1':'New vehicle name',
+    'path1':'Path to the vehicle',
+    'modname1':'Vehicle name',
+    'newname1':'New vehicle name',
+    'vehname1':'Vehicle name in-game',
     'newid1':'New vehicle ID',
     'tip':'Tip: you can insert the name above or choose on the list below',
     'class1':'Vehicle class',
@@ -93,13 +97,13 @@ else:
     'vehsound1':'Vehicle sound',
     'cfgpath1':'Path to \'gtasa_vehicleAudioSettings.cfg\'',
     'cfgpath2':'Path to \'gtavc_vehicleAudioSettings.cfg\'',
-    'newveh1':'Mod name',
+    'newveh1':'Vehicle name',
     'vehaudio1':'Vehicle name to get audio from',
     'poppath1':'Path to \'cargrp.dat\'',
     'popveh1':'Vehicle name to insert',
     'popitem1':'Choose group',
     'warning1':'Warning',
-    'warn1':'\'New mod name\' cannot have more than 7 characters!',
+    'warn1':'\'New vehicle name\' cannot have more than 7 characters!',
     'apply1':'Apply',
     'default1':'DEFAULT',
     'infolabel1': 'If you need help, click "More info" down below to understand\nbetter how it works. This program will make this process easier and faster.',
@@ -115,7 +119,11 @@ else:
     'bike1': 'Number of bike lines',
     'plane1': 'Number of flying lines',
     'boat1': 'Number of boat lines',
-    'choose1':'Search'
+    'choose1':'Search',
+    'remove1':'Remove',
+    'create1':'Create lines',
+    'donemsg1':'Applied sucessfully!',
+    'errormsg1':'An error occurred while trying to complete the request'
     }
 
 '''def on_tab_selected(event):
@@ -270,14 +278,14 @@ inipath = Entry(tab1, width=80, borderwidth=2)
 inipath.insert(0, texts['inipath1'])
 inipath.config(fg='grey')
 inipath.grid(padx=50, pady=5, column=0, row=1)
-inipath.bind('<Button-1>', onclick)
+inipath.bind('<FocusIn>', onclick)
 
 # HANDLINE.CFG
 handcfg = Entry(tab1, width=80, borderwidth=2)
 handcfg.insert(0, 'Apply \'handling.cfg\' patch (0|1)')
 handcfg.config(fg='grey')
 handcfg.grid(padx=5, pady=5, column=0, row=2)
-handcfg.bind('<Button-1>', onclick)
+handcfg.bind('<FocusIn>', onclick)
 
 handcfgvar = BooleanVar()
 handcfgbox = Checkbutton(tab1, variable=handcfgvar)
@@ -289,7 +297,7 @@ audio = Entry(tab1, width=80, borderwidth=2)
 audio.insert(0, 'Enable vehicle audio loader (0|1)')
 audio.config(fg='grey')
 audio.grid(padx=5, pady=5, column=0, row=3)
-audio.bind('<Button-1>', onclick)
+audio.bind('<FocusIn>', onclick)
 
 audiovar = BooleanVar()
 audiobox = Checkbutton(tab1, variable=audiovar)
@@ -301,7 +309,7 @@ handlines = Entry(tab1, width=80, borderwidth=2)
 handlines.insert(0, 'Number of standard lines')
 handlines.config(fg='grey')
 handlines.grid(padx=5, pady=5, column=0, row=4)
-handlines.bind('<Button-1>', onclick)
+handlines.bind('<FocusIn>', onclick)
 
 handlinesvar = BooleanVar()
 handlinesbox = Checkbutton(tab1, variable=handlinesvar)
@@ -313,7 +321,7 @@ vehmodels = Entry(tab1, width=80, borderwidth=2)
 vehmodels.insert(0, 'Vehicle Models')
 vehmodels.config(fg='grey')
 vehmodels.grid(padx=5, pady=5, column=0, row=5)
-vehmodels.bind('<Button-1>', onclick)
+vehmodels.bind('<FocusIn>', onclick)
 vehmodels.bind('<Enter>', onhover)
 vehmodels.bind('<Leave>', onleave)
 
@@ -327,7 +335,7 @@ killable = Entry(tab1, width=80, borderwidth=2)
 killable.insert(0, 'Count of killable model IDs')
 killable.config(fg='grey')
 killable.grid(padx=5, pady=5, column=0, row=6)
-killable.bind('<Button-1>', onclick)
+killable.bind('<FocusIn>', onclick)
 
 killablevar = BooleanVar()
 killablebox = Checkbutton(tab1, variable=killablevar)
@@ -339,7 +347,7 @@ bike = Entry(tab1, width=80, borderwidth=2)
 bike.insert(0, 'Number of bike lines')
 bike.config(fg='grey')
 bike.grid(padx=5, pady=5, column=0, row=7)
-bike.bind('<Button-1>', onclick)
+bike.bind('<FocusIn>', onclick)
 
 bikevar = BooleanVar()
 bikebox = Checkbutton(tab1, variable=bikevar)
@@ -351,7 +359,7 @@ plane = Entry(tab1, width=80, borderwidth=2)
 plane.insert(0, 'Number of flying lines')
 plane.config(fg='grey')
 plane.grid(padx=5, pady=5, column=0, row=8)
-plane.bind('<Button-1>', onclick)
+plane.bind('<FocusIn>', onclick)
 
 planevar = BooleanVar()
 planebox = Checkbutton(tab1, variable=planevar)
@@ -363,7 +371,7 @@ boat = Entry(tab1, width=80, borderwidth=2)
 boat.insert(0, 'Number of boat lines')
 boat.config(fg='grey')
 boat.grid(padx=5, pady=5, column=0, row=9)
-boat.bind('<Button-1>', onclick)
+boat.bind('<FocusIn>', onclick)
 
 boatvar = BooleanVar()
 boatbox = Checkbutton(tab1, variable=boatvar)
@@ -376,31 +384,31 @@ path = Entry(tab2, width=80, borderwidth=2)
 path.insert(0, texts['path1'])
 path.config(fg='grey')
 path.grid(padx=50, pady=5, column=0, row=3)
-path.bind('<Button-1>', onclick)
+path.bind('<FocusIn>', onclick)
 
 modname = Entry(tab2, width=80, borderwidth=2)
 modname.insert(0, texts['modname1'])
 modname.config(fg='grey')
 modname.grid(padx=5, pady=5, column=0, row=4)
-modname.bind('<Button-1>', onclick)
+modname.bind('<FocusIn>', onclick)
 
 newname = Entry(tab2, width=80, borderwidth=2)
 newname.insert(0, texts['newname1'])
 newname.config(fg='grey')
 newname.grid(padx=5, pady=5, column=0, row=5)
-newname.bind('<Button-1>', onclick)
+newname.bind('<FocusIn>', onclick)
 
 vehname = Entry(tab2, width=80, borderwidth=2)
 vehname.insert(0, texts['vehname1'])
 vehname.config(fg='grey')
 vehname.grid(padx=5, pady=5, column=0, row=6)
-vehname.bind('<Button-1>', onclick)
+vehname.bind('<FocusIn>', onclick)
 
 newid = Entry(tab2, width=80, borderwidth=2)
 newid.insert(0, texts['newid1'])
 newid.config(fg='grey')
 newid.grid(padx=5, pady=5, column=0, row=7)
-newid.bind('<Button-1>', onclick)
+newid.bind('<FocusIn>', onclick)
 
 newidvar = BooleanVar()
 newidbox = Checkbutton(tab2, variable=newidvar)
@@ -418,6 +426,8 @@ item.set(texts['class1'])
 dropmenu = OptionMenu(tab2, item, *list)
 dropmenu.config(width=15)
 dropmenu.grid(padx=5, pady=5, column=0, row=10)
+
+#fixname = '[]'
 
 # ======================== TAB 3 ========================
 
@@ -447,19 +457,19 @@ cfgpath = Entry(tab3, width=80, borderwidth=2)
 cfgpath.insert(0, texts['cfgpath1'])
 cfgpath.config(fg='grey')
 cfgpath.grid(padx=50, pady=5, column=0, row=0)
-cfgpath.bind('<Button-1>', onclick)
+cfgpath.bind('<FocusIn>', onclick)
 
 newveh = Entry(tab3, width=80, borderwidth=2)
 newveh.insert(0, texts['newveh1'])
 newveh.config(fg='grey')
 newveh.grid(padx=5, pady=5, column=0, row=1)
-newveh.bind('<Button-1>', onclick)
+newveh.bind('<FocusIn>', onclick)
 
 vehaudio = Entry(tab3, width=80, borderwidth=2)
 vehaudio.insert(0, texts['vehaudio1'])
 vehaudio.config(fg='grey')
 vehaudio.grid(padx=5, pady=5, column=0, row=2)
-vehaudio.bind('<Button-1>', onclick)
+vehaudio.bind('<FocusIn>', onclick)
 
 # ======================== TAB 4 ========================
 
@@ -467,13 +477,13 @@ poppath = Entry(tab4, width=80, borderwidth=2)
 poppath.insert(0, texts['poppath1'])
 poppath.config(fg='grey')
 poppath.grid(padx=50, pady=5, column=0, row=0)
-poppath.bind('<Button-1>', onclick)
+poppath.bind('<FocusIn>', onclick)
 
 popveh = Entry(tab4, width=80, borderwidth=2)
 popveh.insert(0, texts['popveh1'])
 popveh.config(fg='grey')
 popveh.grid(padx=5, pady=5, column=0, row=1)
-popveh.bind('<Button-1>', onclick)
+popveh.bind('<FocusIn>', onclick)
 
 poplist = ['POPCYCLE_GROUP_WORKERS', 'POPCYCLE_GROUP_BUSINESS', 'POPCYCLE_GROUP_CLUBBERS', 'POPCYCLE_GROUP_FARMERS', 'POPCYCLE_GROUP_BEACHFOLK', 'POPCYCLE_GROUP_PARKFOLK',
            'POPCYCLE_GROUP_CASUAL_RICH', 'POPCYCLE_GROUP_CASUAL_AVERAGE', 'POPCYCLE_GROUP_CASUAL_POOR', 'POPCYCLE_GROUP_PROSTITUTES', 'POPCYCLE_GROUP_CRIMINALS',
@@ -502,9 +512,11 @@ def configcargrp():
     poppathvar = poppath.get()
     popvehvar = popveh.get()
     popitemvar = popitem.get()
+    removecheck = removevar2.get()
     popsave = []
     lineveh = []
     line = ''
+    donemsg = False
     try:
         popfile = open(poppathvar + "\\" + "cargrp.dat", 'r+')
     except:
@@ -529,14 +541,24 @@ def configcargrp():
                 popfile.write(popsave[x])
             break
         if popitemvar in line:
-            str = line.split('#')
-            str = ' '.join(str[0].split())  # Remover tabs, espaços
-            str = str.split(', ')
-            lineveh = [', '.join(str[n:]) for n in range(len(str))]  # Juntando na lista cada item do popcycle
-            index = len(lineveh) - 1
-            line = line.replace(lineveh[index], lineveh[index] + ", " + popvehvar)
+            if removecheck == False:
+                str = line.split('#')
+                str = ' '.join(str[0].split())  # Remover tabs, espaços
+                str = str.split(', ')
+                lineveh = [', '.join(str[n:]) for n in range(len(str))]  # Juntando na lista cada item do popcycle
+                index = len(lineveh) - 1
+                line = line.replace(lineveh[index], lineveh[index] + ", " + popvehvar)
+                donemsg = True
+            else:
+                line = line.replace(', ' + popvehvar, '')
+                line = line.replace(popvehvar, '')
+                donemsg = True
         popsave.append(line)
     popfile.close()
+    if donemsg == True:
+        messagebox.showinfo('Info', texts['donemsg1'])
+    else:
+        messagebox.showerror('ERROR', texts['errormsg1'])
 
 
 def configaudio():
@@ -544,12 +566,15 @@ def configaudio():
     vaudio = vehaudio.get()
     vitem = vehitem.get()
     newvehvar = newveh.get()
+    removecheck = removevar.get()
     savedline = ''
     line = ''
     linecounter = 0
     cfglines = []
     cfglines2 = []
     addlines = False
+    passed = False
+    donemsg = False
     if savcvar.get() == False:
         try:
             cfgfile = open(cfgpath2 + "\\" + "gtasa_vehicleAudioSettings.cfg", 'r+')
@@ -562,7 +587,11 @@ def configaudio():
         except:
             messagebox.showerror('ERROR', "The file 'gtavc_vehicleAudioSettings.cfg' was not found\nArquivo não encontrado")
             return
-    passed = False
+    if len(vaudio) > 0 and not vaudio == texts['vehsound1']:
+        if vitem == texts['vehsound1'] or vitem == texts['disable1']:
+            if not any(ext in vaudio for ext in vehlist) and removecheck == False:
+                messagebox.showerror('ERROR', "Could not find '" + vaudio + "'\nNão foi possível encontrar '" + vaudio + "'")
+                return
     while True:
         try:
             line = cfgfile.readline()
@@ -582,29 +611,42 @@ def configaudio():
             cfgfile.seek(0)
             for x in range(len(cfglines)):
                 cfgfile.write(cfglines[x])
-            if len(savedline) > 0:
-                cfgfile.write(savedline)
-            for x in range(len(cfglines2)):
-                cfgfile.write(cfglines2[x])
+            if removecheck == False:
+                if len(savedline) > 0:
+                    cfgfile.write(savedline)
+                for x in range(len(cfglines2)):
+                    cfgfile.write(cfglines2[x])
             break
-        if not vitem == texts['vehsound1'] and not vitem == texts['disable1']:
-            if vitem in line:
-                savedline = line
-                savedline = savedline.replace(vitem, newvehvar)
-        if len(vaudio) > 0:
-            if any(ext in vaudio for ext in vehlist):
-                if vaudio in line:
+        if removecheck == False:
+            if not vitem == texts['vehsound1'] and not vitem == texts['disable1']:
+                if vitem in line:
                     savedline = line
-                    savedline = savedline.replace(vaudio, newvehvar)
-        if addlines == True:
-            cfglines2.append(line)
+                    savedline = savedline.replace(vitem, newvehvar)
+                    donemsg = True
+            if len(vaudio) > 0:
+                if any(ext in vaudio for ext in vehlist):
+                    if vaudio in line:
+                        savedline = line
+                        savedline = savedline.replace(vaudio, newvehvar)
+                        donemsg = True
+            if addlines == True:
+                cfglines2.append(line)
+            else:
+                cfglines.append(line)
+            if '; A                                         B             C      D      E         F            G            H         I            J           K          L          M           N                 O' in line:
+                linecounter += 1
+                if linecounter == 7:
+                    addlines = True
         else:
-            cfglines.append(line)
-        if '; A                                         B             C      D      E         F            G            H         I            J           K          L          M           N                 O' in line:
-            linecounter += 1
-            if linecounter == 7:
-                addlines = True
+            if not newvehvar in line:
+                cfglines.append(line)
+            else:
+                donemsg = True
     cfgfile.close()
+    if donemsg == True:
+        messagebox.showinfo('Info', texts['donemsg1'])
+    else:
+        messagebox.showerror('ERROR', texts['errormsg1'])
 
 
 def configini():
@@ -664,7 +706,8 @@ def configini():
                                 var = "#" + var
                     else:
                         var = var + " " + answer[x]
-                    if boollist[x].get() == True and answer[x].isdecimal() and len(answer[x]) > 0:
+                        donemsg = True
+                    #if boollist[x].get() == True and answer[x].isdecimal() and len(answer[x]) > 0:
                         if "#" in line:
                             str = "#" + str  # Adicionar para o .replace remover
                         if ";" in line:
@@ -672,6 +715,10 @@ def configini():
                     line = line.replace(str, var)
         inisave.append(line)
     inifile.close()
+    if donemsg == True:
+        messagebox.showinfo('Info', texts['donemsg1'])
+    else:
+        messagebox.showerror('ERROR', texts['errormsg1'])
 
 
 def rename():
@@ -683,7 +730,10 @@ def rename():
     saveall = []
     line = ''
     passed = False
-    if len(newnamevar) > 7:
+    if len(modnamevar) == 0 or modnamevar == texts['modname1']:
+        messagebox.showwarning('ERROR', "'" + texts['modname1'] + "'\nCannot be empty\nNão pode estar vazio")
+        return
+    if len(newnamevar) > 7 or len(newnamevar) == 0:
         messagebox.showwarning(texts['warning1'], texts['warn1'])
         return
     try:
@@ -711,13 +761,18 @@ def rename():
         if len(line) > 0:
             if newidvar.get() == True:
                 if len(newidinput) != 0 and newidinput.isdecimal():
-                    str = re.search(r'(\d*),\s*' + modnamevar, line)
+                    str = re.search(r'\d*,\s*' + modnamevar, line)
                     if str:
                         line = line.replace(str.group(), newidinput + ",\t" + modnamevar)
+            str = re.search(modnamevar.upper() + r',\s*\w*,', line)
+            if str:
+                line = line.replace(str.group(), modnamevar.upper() + ',\t' + modnamevar.upper() + ',')
             if modnamevar.lower() in line:
                 line = line.replace(modnamevar.lower(), newnamevar.lower())
+                donemsg = True
             if modnamevar.upper() in line:
                 line = line.replace(modnamevar.upper(), newnamevar.upper())
+                donemsg = True
             if item.get() != texts['default1'] and item.get() != texts['class1']:
                 x = 1
                 for x in range(len(list)):
@@ -726,15 +781,23 @@ def rename():
                         break
         saveall.append(line)
     file.close()
-    if os.path.isfile(pathvar + "\\" + modnamevar + '.dff'):
-        os.rename(pathvar + "\\" + modnamevar + ".dff", pathvar + "\\" + newnamevar + ".dff")
-    if os.path.isfile(pathvar + "\\" + modnamevar + ".txd"):
-        os.rename(pathvar + "\\" + modnamevar + ".txd", pathvar + "\\" + newnamevar + ".txd")
-    if os.path.isfile(pathvar + "\\" + modnamevar + ".txt"):
-        os.rename(pathvar + "\\" + modnamevar + ".txt", pathvar + "\\" + newnamevar + ".txt")
-    file = open(pathvar + "\\" + newnamevar + ".fxt", "w")
-    file.write(newnamevar.upper() + " " + vehnamevar)
-    file.close()
+    if donemsg == True:
+        if os.path.isfile(pathvar + "\\" + modnamevar + '.dff'):
+            os.rename(pathvar + "\\" + modnamevar + ".dff", pathvar + "\\" + newnamevar + ".dff")
+        if os.path.isfile(pathvar + "\\" + modnamevar + ".txd"):
+            os.rename(pathvar + "\\" + modnamevar + ".txd", pathvar + "\\" + newnamevar + ".txd")
+        if os.path.isfile(pathvar + "\\" + modnamevar + ".txt"):
+            os.rename(pathvar + "\\" + modnamevar + ".txt", pathvar + "\\" + newnamevar + ".txt")
+        if not len(vehnamevar) == 0 and not vehnamevar == texts['vehname1']:
+            if os.path.isfile(pathvar + "\\" + modnamevar + ".fxt"):
+                os.rename(pathvar + "\\" + modnamevar + ".fxt", pathvar + "\\" + newnamevar + ".fxt")
+            file = open(pathvar + "\\" + newnamevar + ".fxt", "w")
+            file.seek(0)
+            file.write(newnamevar.upper() + " " + vehnamevar)
+            file.close()
+        messagebox.showinfo('Info', texts['donemsg1'])
+    else:
+        messagebox.showerror('ERROR', texts['errormsg1'])
 
 
 def pophelp():
@@ -817,11 +880,13 @@ def inipathfile():
     inipath.insert(0, filename)
     inipath.config(fg='black')
 
+
 def configcarpath():
     filename = filedialog.askdirectory()
     path.delete(0, 'end')
     path.insert(0, filename)
     path.config(fg='black')
+
 
 def configaudiopath():
     filename = filedialog.askdirectory()
@@ -829,11 +894,86 @@ def configaudiopath():
     cfgpath.insert(0, filename)
     cfgpath.config(fg='black')
 
+
 def popconfigpath():
     filename = filedialog.askdirectory()
     poppath.delete(0, 'end')
     poppath.insert(0, filename)
     poppath.config(fg='black')
+
+
+def getline(filename, pathvar, modnamevar, saveall, donemsg):
+    try:
+        file = open(pathvar + "\\" + filename, 'r')
+    except:
+        try:
+            file = open(pathvar + "\\" + filename, 'r', encoding="utf8", errors='ignore')
+        except:
+            messagebox.showerror('ERROR', "The file '" + filename + "' was not found\nArquivo não encontrado")
+            return
+    passed = False
+    donemsg = False
+    while True:
+        try:
+            line = file.readline()
+        except:
+            if passed == False:
+                file.close()
+                try:
+                    file = open(pathvar + "\\" + filename, 'r', encoding="utf8", errors='ignore')
+                except:
+                    messagebox.showerror('ERROR', 'Could not read a line in the file, try to remove manually special characters from the file ex. russian, arab characters, etc. or try to change the file encoding')
+                line = file.readline()
+                passed = True
+        if not line:
+            break
+        if modnamevar.lower() in line:
+            modamevar = modnamevar.lower()
+        if modnamevar.upper() in line:
+            modnamevar = modnamevar.upper()
+        #if re.search(modnamevar + ',', line) or re.search(r'\s*' + modnamevar, line) or re.search(modnamevar + r'\s*', line):
+        if modnamevar in line:
+            if not re.search(r'\w' + modnamevar, line) and not re.search(modnamevar + r'\w', line):
+                '''if filename == 'carmods.dat':
+                    line = modnamevar + ', nto_b_l, nto_b_s, nto_b_tw'''
+                saveall.append(line)
+                donemsg = True
+    modnamevar = modname.get()
+    file.close()
+    return
+
+
+def create():
+    pathvar = path.get()
+    modnamevar = modname.get()
+    '''newnamevar = newname.get()
+    vehnamevar = vehname.get()
+    newidinput = newid.get()'''
+    if not any(ext in modnamevar for ext in vehlist):
+        messagebox.showerror('ERROR', "Could not find '" + modnamevar + "'\nNão foi possível encontrar '" + modnamevar + "'")
+        return
+    saveall = []
+    donemsg = False
+    getline('vehicles.ide', pathvar, modnamevar, saveall, donemsg)
+    getline('handling.cfg', pathvar, modnamevar, saveall, donemsg)
+    getline('carcols.dat', pathvar, modnamevar, saveall, donemsg)
+    #getline('carmods.dat', pathvar, modnamevar, saveall, donemsg)
+    '''line = modnamevar.lower() + ", nto_b_l, nto_b_s, nto_b_tw"
+    saveall.append(line)'''
+    donemsg = True
+    if donemsg == True:
+        if not os.path.isdir(pathvar + "\\output\\"):
+            os.mkdir(pathvar + "\\output\\")
+        file = open(pathvar + "\\output\\" + modnamevar + ".txt", 'w')
+        file.seek(0)
+        for x in range(len(saveall)):
+            saveall[x] = saveall[x] + "\n"
+            file.write(saveall[x])
+        file.close()
+        messagebox.showinfo('Info', texts['donemsg1'])
+    else:
+        messagebox.showerror('ERROR', texts['errormsg1'])
+
 
 # tab 1
 configini = Button(tab1, text=texts['apply1'], command=configini, width=20)
@@ -852,12 +992,19 @@ configcarpath.grid(padx=5, pady=5, column=0, row=3, sticky=E)
 tip = Button(tab2, text='?', command=tip, width=3)
 tip.grid(padx=5, pady=5, column=0, row=3, sticky=W)
 
+create = Button(tab2, text=texts['create1'], command=create, width=20)
+create.grid(padx=5, pady=5, column=0, row=22)
+
 # tab 3
 configaudio = Button(tab3, text=texts['apply1'], command=configaudio, width=20)
 configaudio.grid(padx=5, pady=5, column=0, row=20)
 
 configaudiopath = Button(tab3, text='...', command=configaudiopath, width=4)
 configaudiopath.grid(padx=5, pady=5, column=0, row=0, sticky=E)
+
+removevar = BooleanVar()
+remove = Checkbutton(tab3, text=texts['remove1'], variable=removevar)
+remove.grid(padx=5, pady=5, column=0, row=20, sticky=W)
 
 # tab 4
 configcargrp = Button(tab4, text=texts['apply1'], command=configcargrp, width=20)
@@ -867,7 +1014,11 @@ popcfgpath = Button(tab4, text='...', command=popconfigpath, width=4)
 popcfgpath.grid(padx=5, pady=5, column=0, row=0, sticky=E)
 
 pophelp = Button(tab4, text='?', command=pophelp, width=2)
-pophelp.grid(padx=5, pady=5, column=0, row=2, stick=E)
+pophelp.grid(padx=5, pady=5, column=0, row=2, sticky=E)
+
+removevar2 = BooleanVar()
+remove2 = Checkbutton(tab4, text=texts['remove1'], variable=removevar2)
+remove2.grid(padx=5, pady=5, column=0, row=20, sticky=W)
 
 # tab 5
 needed = Button(tab5, text=texts['needed'], command=needed)
