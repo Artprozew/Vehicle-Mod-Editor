@@ -26,7 +26,7 @@ import gettext # pygettext -d base -o core/locales/base.pot core/main.py
 #_ = en.gettext
 #_ = gettext.gettext
 gettext.install('base')
-
+print('ready')
 #  15/01/2021
 #  Made by Artprozew
 
