@@ -1,0 +1,1 @@
+305,	glendale, glendale,   vehicle, GLENDALE,	GLENDALE, null, unused,	-830.6,	8734.21, 16,  10,	-83.89, -9.05

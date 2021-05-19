@@ -1,0 +1,4 @@
+Save the checkboxes states
+Save the path from entries
+Better multi-language system
+TkTreeview or TkTreectrl to ID List tab, so i think that it would have a better implementation of a list with columns

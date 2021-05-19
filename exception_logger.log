@@ -1,0 +1,11 @@
+[2021-05-18 04:32:48,526] (INFO)	Logger ready
+[2021-05-18 04:32:49,871] (CRITICAL)	Unhandled exception
+
+Traceback (most recent call last):
+  File "core/main.py", line 25, in <module>
+    en = gettext.translation(get_filename(__file__), localedir='core/locales', languages=['en'])
+  File "/usr/lib/python3.8/gettext.py", line 603, in translation
+    raise FileNotFoundError(ENOENT,
+FileNotFoundError: [Errno 2] No translation file found for domain: 'main'
+
+

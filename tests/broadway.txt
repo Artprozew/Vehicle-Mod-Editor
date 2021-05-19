@@ -1,0 +1,1 @@
+485,	broadway, broadway,   vehicle, BROADWAY,	BROADWAY, null, unused,	969.16,	12863.34, -534,  81,	14.5, -15.06
