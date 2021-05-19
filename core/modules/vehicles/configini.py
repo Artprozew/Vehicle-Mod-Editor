@@ -63,7 +63,7 @@ def configini():
 
     def onhover(event):
         time.sleep(0.1)
-        inihints.configure(text=_('Não mude essa linha'))
+        inihints.configure(text=_('NÃO EDITE ESSA LINHA CASO USE O OPEN LIMIT ADJUSTER\nDESATIVE-A DESMARCANDO A CAIXA AO LADO\nvá na aba ajuda para saber mais'))
 
 
     def onleave(event):
@@ -97,8 +97,8 @@ def configini():
     savcbox.deselect()
 
     # HANDLING.CFG PATCH
-    dictlist['handcfg'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), _('Apply "handling.cfg"')]
-    dictlist['handcfg'][0].insert(0, _('Apply "handling.cfg"'))
+    dictlist['handcfg'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Apply handling.cfg patch']
+    dictlist['handcfg'][0].insert(0, _('Apply handling.cfg patch'))
     dictlist['handcfg'][0].config(fg='grey')
     dictlist['handcfg'][0].grid(padx=5, pady=5, column=1, row=2, columnspan=2)
     dictlist['handcfg'][0].bind('<FocusIn>', onclick)
@@ -108,7 +108,7 @@ def configini():
     handcfgbox.select()
 
     # AUDIO LOADER
-    dictlist['audio'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), _('Enable vehicle audio loader')]
+    dictlist['audio'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Enable vehicle audio loader']
     dictlist['audio'][0].insert(0, _('Enable vehicle audio loader'))
     dictlist['audio'][0].config(fg='grey')
     dictlist['audio'][0].grid(padx=5, pady=5, column=1, row=3, columnspan=2)
@@ -119,8 +119,8 @@ def configini():
     audiobox.select()
 
     # STANDARD LINES
-    dictlist['handlines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'standardlines')]
-    dictlist['handlines'][0].insert(0, translation('vehicles', 'configinitab', 'standardlines'))
+    dictlist['handlines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Number of standard lines']
+    dictlist['handlines'][0].insert(0, _('Number of standard lines'))
     dictlist['handlines'][0].config(fg='grey')
     dictlist['handlines'][0].grid(padx=5, pady=5, column=1, row=4, columnspan=2)
     dictlist['handlines'][0].bind('<FocusIn>', onclick)
@@ -130,8 +130,8 @@ def configini():
     handlinesbox.select()
 
     # VEH MODELS
-    dictlist['vehmodels'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'vehiclemodels')]
-    dictlist['vehmodels'][0].insert(0, translation('vehicles', 'configinitab', 'vehiclemodels'))
+    dictlist['vehmodels'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Vehicle Models']
+    dictlist['vehmodels'][0].insert(0, _('Vehicle Models'))
     dictlist['vehmodels'][0].config(fg='grey')
     dictlist['vehmodels'][0].grid(padx=5, pady=5, column=1, row=5, columnspan=2)
     dictlist['vehmodels'][0].bind('<FocusIn>', onclick)
@@ -143,8 +143,8 @@ def configini():
     vehmodelsbox.select()
 
     # KILLABLE MODELS
-    dictlist['killablemodels'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'killablemodels')]
-    dictlist['killablemodels'][0].insert(0, translation('vehicles', 'configinitab', 'killablemodels'))
+    dictlist['killablemodels'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Count of killable model IDs']
+    dictlist['killablemodels'][0].insert(0, _('Count of killable model IDs'))
     dictlist['killablemodels'][0].config(fg='grey')
     dictlist['killablemodels'][0].grid(padx=5, pady=5, column=1, row=6, columnspan=2)
     dictlist['killablemodels'][0].bind('<FocusIn>', onclick)
@@ -154,8 +154,8 @@ def configini():
     killablebox.select()
 
     # BIKE
-    dictlist['bikelines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'bikelines')]
-    dictlist['bikelines'][0].insert(0, translation('vehicles', 'configinitab', 'bikelines'))
+    dictlist['bikelines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Number of bike lines']
+    dictlist['bikelines'][0].insert(0, _('Number of bike lines'))
     dictlist['bikelines'][0].config(fg='grey')
     dictlist['bikelines'][0].grid(padx=5, pady=5, column=1, row=7, columnspan=2)
     dictlist['bikelines'][0].bind('<FocusIn>', onclick)
@@ -165,8 +165,8 @@ def configini():
     bikebox.select()
 
     # PLANE
-    dictlist['planelines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'planelines')]
-    dictlist['planelines'][0].insert(0, translation('vehicles', 'configinitab', 'planelines'))
+    dictlist['planelines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Number of flying lines']
+    dictlist['planelines'][0].insert(0, _('Number of flying lines'))
     dictlist['planelines'][0].config(fg='grey')
     dictlist['planelines'][0].grid(padx=5, pady=5, column=1, row=8, columnspan=2)
     dictlist['planelines'][0].bind('<FocusIn>', onclick)
@@ -176,8 +176,8 @@ def configini():
     planebox.select()
 
     # BOAT
-    dictlist['boatlines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'boatlines')]
-    dictlist['boatlines'][0].insert(0, translation('vehicles', 'configinitab', 'boatlines'))
+    dictlist['boatlines'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), 'Number of boat lines']
+    dictlist['boatlines'][0].insert(0, _('Number of boat lines'))
     dictlist['boatlines'][0].config(fg='grey')
     dictlist['boatlines'][0].grid(padx=5, pady=5, column=1, row=9, columnspan=2)
     dictlist['boatlines'][0].bind('<FocusIn>', onclick)
