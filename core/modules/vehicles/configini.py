@@ -97,7 +97,7 @@ def configini():
     savcbox.deselect()
 
     # HANDLING.CFG PATCH
-    dictlist['handcfg'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'handlingpatch')]
+    dictlist['handcfg'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), _(&#39;Apply &quot;handling.cfg&quot;&#39;))]
     dictlist['handcfg'][0].insert(0, _('Apply "handling.cfg"'))
     dictlist['handcfg'][0].config(fg='grey')
     dictlist['handcfg'][0].grid(padx=5, pady=5, column=1, row=2, columnspan=2)
@@ -108,8 +108,8 @@ def configini():
     handcfgbox.select()
 
     # AUDIO LOADER
-    dictlist['audio'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), translation('vehicles', 'configinitab', 'audioloader')]
-    dictlist['audio'][0].insert(0, translation('vehicles', 'configinitab', 'audioloader'))
+    dictlist['audio'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), _('Enable vehicle audio loader')]
+    dictlist['audio'][0].insert(0, _('Enable vehicle audio loader'))
     dictlist['audio'][0].config(fg='grey')
     dictlist['audio'][0].grid(padx=5, pady=5, column=1, row=3, columnspan=2)
     dictlist['audio'][0].bind('<FocusIn>', onclick)
