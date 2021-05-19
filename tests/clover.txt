@@ -1,1 +1,0 @@
-488,	clover, clover,   vehicle, CLOVER,	CLOVER, null, unused,	-941.39,	-12418.31, -84,  -74,	-88.28, 65.23

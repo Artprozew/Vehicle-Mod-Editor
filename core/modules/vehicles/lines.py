@@ -189,13 +189,13 @@ def lines():
     dictlist['newname'].bind('<FocusIn>', onclick)
 
     dictlist['vehname'] = Entry(tab['lines'], width=80, borderwidth=2)
-    dictlist['vehname'].insert(0, translation('vehicles', 'linestab', 'newvehiclename'))
+    dictlist['vehname'].insert(0, _('Novo nome para o veículo no jogo'))
     dictlist['vehname'].config(fg='grey')
     dictlist['vehname'].grid(padx=5, pady=5, column=0, row=6)
     dictlist['vehname'].bind('<FocusIn>', onclick)
 
     dictlist['newid'] = Entry(tab['lines'], width=80, borderwidth=2)
-    dictlist['newid'].insert(0, translation('vehicles', 'linestab', 'newid'))
+    dictlist['newid'].insert(0, _('Novo ID para o veículo'))
     dictlist['newid'].config(fg='grey')
     dictlist['newid'].grid(padx=5, pady=5, column=0, row=7)
     dictlist['newid'].bind('<FocusIn>', onclick)

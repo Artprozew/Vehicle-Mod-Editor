@@ -1,1 +1,0 @@
-457,	romero, romero,   vehicle, ROMERO,	ROMERO, null, unused,	323.32,	10673.2, 546,  -90,	95.16, 15.82

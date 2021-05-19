@@ -1,3 +1,0 @@
-language = "python3"
-#run = "python -m ipdb -c continue core/main.py"  # for debugging
-run = "python core/main.py"

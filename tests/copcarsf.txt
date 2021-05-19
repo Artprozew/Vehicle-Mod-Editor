@@ -1,1 +1,0 @@
-215,	copcarsf, copcarsf,   vehicle, COPCARSF,	COPCARSF, null, unused,	428.76,	24669.94, -434,  -53,	35.09, -22.61

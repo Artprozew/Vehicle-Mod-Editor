@@ -1,1 +1,0 @@
-476,	intruder, intruder,   vehicle, INTRUDER,	INTRUDER, null, unused,	-662.88,	-24246.99, 883,  93,	-90.26, -18.31

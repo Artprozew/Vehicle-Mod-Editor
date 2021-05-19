@@ -1,1 +1,0 @@
-259,	freibox, freibox,   vehicle, FREIBOX,	FREIBOX, null, unused,	-585.78,	-46999.54, -860,  98,	3.67, 11.18
