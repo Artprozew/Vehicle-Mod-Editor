@@ -1,11 +1,16 @@
-[2021-05-18 04:32:48,526] (INFO)	Logger ready
-[2021-05-18 04:32:49,871] (CRITICAL)	Unhandled exception
+[2021-05-19 07:16:51,636] (INFO)	Logger ready
+[2021-05-19 07:16:51,842] (CRITICAL)	Unhandled exception
 
 Traceback (most recent call last):
-  File "core/main.py", line 25, in <module>
-    en = gettext.translation(get_filename(__file__), localedir='core/locales', languages=['en'])
-  File "/usr/lib/python3.8/gettext.py", line 603, in translation
-    raise FileNotFoundError(ENOENT,
-FileNotFoundError: [Errno 2] No translation file found for domain: 'main'
+  File "core/main.py", line 16, in <module>
+    import modules
+  File "/home/runner/Vehicle-Mod-Editor/core/modules/__init__.py", line 8, in <module>
+    import modules.vehicles
+  File "/home/runner/Vehicle-Mod-Editor/core/modules/vehicles/__init__.py", line 10, in <module>
+    import modules.vehicles.configini
+  File "/home/runner/Vehicle-Mod-Editor/core/modules/vehicles/configini.py", line 100
+    dictlist['handcfg'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), _(&#39;Apply &quot;handling.cfg&quot;&#39;))]
+                                                                                             ^
+SyntaxError: invalid syntax
 
 

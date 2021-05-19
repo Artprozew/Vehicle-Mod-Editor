@@ -97,7 +97,7 @@ def configini():
     savcbox.deselect()
 
     # HANDLING.CFG PATCH
-    dictlist['handcfg'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), _(&#39;Apply &quot;handling.cfg&quot;&#39;))]
+    dictlist['handcfg'] = [Entry(tab['configini'], width=75, borderwidth=2), BooleanVar(), _('Apply "handling.cfg"')]
     dictlist['handcfg'][0].insert(0, _('Apply "handling.cfg"'))
     dictlist['handcfg'][0].config(fg='grey')
     dictlist['handcfg'][0].grid(padx=5, pady=5, column=1, row=2, columnspan=2)
